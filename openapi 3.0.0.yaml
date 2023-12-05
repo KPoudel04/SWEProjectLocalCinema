@@ -1,0 +1,232 @@
+openapi: 3.0.0
+info:
+  title: Local Cinema API
+  version: 1.0.0
+
+servers:
+  - url: 'localhost:3000'
+    description: Test Server
+
+paths:
+  /signup:
+    post:
+      summary: Sign up a new user
+      description: Create a new user account with a unique username and password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+      responses:
+        '201':
+          description: User created successfully.
+        '400':
+          description: Invalid input.
+
+  /signin:
+    post:
+      summary: Sign in a user or admin
+      description: Authenticate a user or admin and return an access token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+      responses:
+        '200':
+          description: Authentication successful.
+        '401':
+          description: Authentication failed.
+
+  /users/{userID}/shifts:
+    get:
+      summary: Get shifts for a user
+      description: Retrieve all the shifts assigned to a user.
+      parameters:
+        - name: userID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved shifts.
+        '404':
+          description: User not found.
+
+  /users/{userID}/reserveShift:
+    patch:
+      summary: Reserve a shift for a user
+      description: Reserve a shift for a user.
+      parameters:
+        - name: userID
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                shiftID:
+                  type: string
+              required:
+                - shiftID
+      responses:
+        '200':
+          description: Shift reserved successfully.
+        '400':
+          description: Bad request.
+
+  /admin/createSuper:
+    patch:
+      summary: Create a super user
+      description: Admin endpoint to create a super user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                isSuperUser:
+                  type: boolean
+                  default: true
+              required:
+                - userID
+      responses:
+        '201':
+          description: Super user created successfully.
+        '400':
+          description: Invalid input.
+
+  /admin/assignShift:
+    patch:
+      summary: Assign a shift to a user
+      description: Admin endpoint to assign a shift to a user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userID:
+                  type: string
+                shiftID:
+                  type: string
+              required:
+                - userID
+                - shiftID
+      responses:
+        '200':
+          description: Shift assigned successfully.
+        '400':
+          description: Bad request.
+
+  /admin/removeShift:
+    delete:
+      summary: Remove a shift from a user
+      description: Admin endpoint to remove a shift from a user.
+      parameters:
+        - name: userID
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: shiftID
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Shift removed successfully.
+        '400':
+          description: Bad request.
+        '404':
+          description: User or shift not found.
+
+  /admin/{userID}/remove:
+    delete:
+      summary: Delete a user account
+      description: Remove a user account from the system.
+      parameters:
+        - name: userID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User account deleted successfully.
+        '404':
+          description: User not found.
+
+  /admin/updateShift:
+    put:
+      summary: Update a shift
+      description: Admin endpoint to update the details of a shift.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                shiftID:
+                  type: string
+                newDetails:
+                  type: object
+                  properties:
+                    startTime:
+                      type: string
+                      format: date-time
+                    endTime:
+                      type: string
+                      format: date-time
+                    location:
+                      type: string
+              required:
+                - shiftID
+                - newDetails
+      responses:
+        '200':
+          description: Shift updated successfully.
+        '400':
+          description: Invalid input.
+
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+
+security:
+  - apiKeyAuth: []
