@@ -53,6 +53,7 @@ class superUser extends User {
     }
 
 }
+
 module.exports = {
     User,
     sysAdmin,

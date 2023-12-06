@@ -5,12 +5,6 @@ class Shift {
         this.shiftTime = shiftTime;
         this.shiftUser = shiftUser;
     }
-    getShifts() {
-        return this.shifts;
-    }
-    getShiftUser() {
-        return this.shiftUser;
-    }
     createShift(shift) {
         this.shifts.push(shift);
     }

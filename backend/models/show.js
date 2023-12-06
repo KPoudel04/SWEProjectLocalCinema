@@ -24,3 +24,7 @@ class Show {
         }
     }
 }
+module.exports = {
+    Show,
+    shows
+}
