@@ -1,11 +1,12 @@
 let users = new Map();
 
 class User {
-    constructor(name,id, password){
+    constructor(name,id, password, role){
         this.name = name;
         this.id = id;
         this.password = password;
         this.shifts = [];
+        this.role = role;
     }
     addShift(shift){
         this.shifts.push(shift);
@@ -18,11 +19,12 @@ class User {
     }
 }
 class sysAdmin extends User{
-    constructor(name,id, password){
-        super(name,id, password);
+    constructor(name,id, password, role){
+        super(name,id, password, role);
     }
     createUser(name, userId, password) {
         const newUser = new User(name, userId, password);
+        users.set(userId, newUser);
         return newUser;
     }
     removeUser(uid){
@@ -35,15 +37,16 @@ class sysAdmin extends User{
     elevateUser(uid){
         users.forEach((user) => {
             if (user.id === uid) {
-                user = new superUser(user.name, user.id, user.password);
+                elevatedUser = new superUser(user.name, user.id, user.password, 'superUser');
+                users.set(uid, elevatedUser);
             }
         });
     }
 
 }
 class superUser extends User {
-    constructor(name,id, password){
-        super(name,id, password);
+    constructor(name,id, password, role){
+        super(name,id, password, role);
     }
     assignShift(shift, user){
         user.addShift(shift);
@@ -53,6 +56,8 @@ class superUser extends User {
     }
 
 }
+const admin = new sysAdmin('admin', '0', 'root', 'sysAdmin');
+users.set('0', admin);
 
 module.exports = {
     User,

@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../userContext/usercontext';
 function Signin() {
     const navigate = useNavigate();
+    const { user, setUser } = useContext(UserContext);
     const [formData, setFormData] = useState({
         name: '',
         password: '',
@@ -32,7 +34,8 @@ function Signin() {
             if (!response.ok) {
                 throw new Error('Signin failed');
             }
-            const user = await response.json();
+            const userData = await response.json();
+            setUser(userData);
             console.log('Signed in successfully:', user);
         } catch (error) {
             console.error('Signin error:', error);
