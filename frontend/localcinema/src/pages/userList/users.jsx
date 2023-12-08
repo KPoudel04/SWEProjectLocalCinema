@@ -9,9 +9,11 @@ const Users = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch users from the backend
     axios.get('http://localhost:3000/users')
-      .then(response => setUsers(response.data))
+      .then(response => {
+        setUsers(response.data);
+        console.log(response.data); // You can log data here to inspect
+      })
       .catch(error => console.error('Error fetching users:', error));
   }, []);
 
@@ -19,18 +21,18 @@ const Users = () => {
     <div>
       <h2>Users</h2>
       <ul>
-      {users.map(user => (
-  <li key={user.id}>
-    <div onClick={() => navigate('/users/${user.id}/shifts')}>
-      {user.name}
-    </div>
-  </li>
-))}
-
+        {users.map(user => (
+          <li key={user.id}>
+            <div onClick={() => navigate(`/users/${user.id}/shifts`)}>
+              {user.name} - {user.role} - shifts: {user.shifts && user.shifts.map(shift => `${shift.shiftTime} - ${shift.shiftMovie}`).join(', ')}
+            </div>
+          </li>
+        ))}
       </ul>
     </div>
   );
 };
 
 export default Users;
+
 

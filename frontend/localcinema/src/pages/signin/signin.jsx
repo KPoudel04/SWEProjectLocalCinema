@@ -1,6 +1,7 @@
 import React, { useState, useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../userContext/usercontext';
+import './signin.css';
 function Signin() {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
@@ -27,6 +28,7 @@ function Signin() {
                 body: JSON.stringify(formData),
             });
             if (response.ok) {
+                setUser(formData)
                 navigate('/dashboard'); 
             } else {
                 throw new Error('Signin failed');
@@ -44,30 +46,42 @@ function Signin() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>Name:</label>
-                <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label>Password:</label>
-                <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
+      <div className="form-container">
+        <form onSubmit={handleSubmit} className="form">
+          <div className="input-group">
+            <label htmlFor="name">Name:</label> 
+            <input
+              id="name"  
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="password">Password:</label> 
+            <input
+              id="password"  
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="button-group">
             <button type="submit">Sign In</button>
+            <button onClick={() => navigate('/signup')}>
+              Sign Up
+            </button>
+          </div>
         </form>
+      </div>
     );
+    
+    
 }
+
 
 export default Signin;

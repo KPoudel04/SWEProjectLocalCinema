@@ -1,9 +1,11 @@
 let shifts = new Map();
 class Shift {
-    constructor(shiftID, shiftTime, shiftUser) {
+    constructor(shiftID, shiftTime, shiftUser, shiftMovie) {
         this.shiftID = shiftID;
         this.shiftTime = shiftTime;
         this.shiftUser = shiftUser;
+        this.shiftMovie = shiftMovie;
+
     }
     createShift(shift) {
         this.shifts.push(shift);

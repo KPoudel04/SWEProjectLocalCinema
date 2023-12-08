@@ -25,7 +25,7 @@ function Signup() {
                 body: JSON.stringify(formData),
             });
             if (response.ok) {
-                Navigate('/signin')
+                Navigate('/')
             }else{
                 throw new Error('Signup failed');
             }
@@ -39,30 +39,41 @@ function Signup() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>Name:</label>
-                <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                />
+        <div className="form-container">
+          <form onSubmit={handleSubmit} className="form">
+            <div className="input-group">
+              <label htmlFor="name">Name:</label>
+              <input
+                id="name" // Add this line
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
             </div>
-            <div>
-                <label>Password:</label>
-                <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                />
+            <div className="input-group">
+              <label htmlFor="password">Password:</label>
+              <input
+                id="password" // Add this line
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
             </div>
-            <button type="submit">Sign Up</button>
-        </form>
-    );
+            <div className="button-group">
+              <button type="submit">Sign In</button>
+              <button onClick={() => Navigate('/signup')}>
+                Sign Up
+              </button>
+            </div>
+          </form>
+        </div>
+      );
+      
+    
 }
 
 export default Signup;
